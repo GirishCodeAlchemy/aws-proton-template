@@ -1,0 +1,312 @@
+schema: 
+  format: 
+    openapi: "3.0.0"
+  service_input_type: ModuleServiceInput
+  types:
+    ModuleServiceInput: 
+      type: object
+      description: "Input properties for a Lambda module."
+      properties: 
+        lambda_map: 
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              object_instance:
+                type: object
+                properties:
+                  lambda_name: 
+                    default: tb-cops-1x0-lambda-proton
+                    type: string
+                  package_type: 
+                    default: Zip
+                    type: string
+                  vpc_id:
+                    type: string
+                    nullable: true
+                  image_uri:
+                    type: string
+                    nullable: true
+                  runtime: 
+                    default: python3.8
+                    type: string
+                  lambda_handler: 
+                    default: lambda.lambda_handler
+                    type: string
+                  lambda_description: 
+                    default: Terraform test lambda
+                    type: string
+                  managed_policy_arns: 
+                    type: array
+                    items:
+                      type: string
+                  lambda_assume_role_policy:
+                    type: string
+                    nullable: true
+                  lambda_inline_policy: 
+                    default: |-
+                      {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                            "Effect": "Allow",
+                            "Action": [
+                                "ec2:DescribeInstances",
+                                "ec2:DescribeInstanceStatus",
+                                "ec2:DeleteTags",
+                                "ec2:CreateTags",
+                                "secretsmanager:*",
+                              "s3:*",
+                              "logs:*",
+                              "ecr:*",
+                              "sqs:*"
+                            ],
+                            "Resource": "*"
+                            }
+                        ]
+                      }
+                    type: string
+                    nullable: true
+                  aws_lambda_permission:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  schedule_time_trigger:
+                    type: string
+                    nullable: true
+                  event_pattern_trigger:
+                    type: string
+                    nullable: true
+                  log_retention_in_days:
+                    type: string
+                    nullable: true
+                  auto_update_function_image:
+                    type: boolean
+                    default: false
+                  timeout: 
+                    default: 30
+                    type: number
+                  memory_size: 
+                    default: 512
+                    type: number
+                  environment_variables_map:
+                    type: array
+                    nullable: true
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        object_instance:
+                          type: string
+        iam_map: 
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              object_instance:
+                type: object
+                properties:
+                  provisioned_by_tag:
+                    default: terraform-cloudops                     
+                    type: string
+        sqs_map: 
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              object_instance:
+                type: object
+                properties:
+                  sqs_name:
+                    type: string
+                  environment_variables_map:
+                    type: array
+                    nullable: true
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        object_instance:
+                          type: string
+                  delay_seconds:
+                    type: integer
+                    nullable: true
+                  max_message_size:
+                    type: integer
+                    nullable: true
+                  message_retention_seconds:
+                    type: integer
+                    nullable: true
+                  receive_wait_time_seconds:
+                    type: integer
+                    nullable: true
+                  redrive_policy:
+                    type: string
+                    nullable: true
+                  visibility_timeout_seconds:
+                    type: string
+                    nullable: true
+        ec2_map: 
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              object_instance:
+                type: object
+                properties:
+                  ami:
+                    type: string
+                    nullable: true
+                  instance_type:
+                    type: string
+                    nullable: true
+                  key_name:
+                    type: string
+                    nullable: true
+                  subnet_id:
+                    type: string
+                    nullable: true
+                  vpc_id:
+                    type: string
+                    nullable: true
+                  ec2_name:
+                    type: string
+                    nullable: true
+                  program_tag:
+                    type: string
+                    nullable: true
+                  cidr_blocks:
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                  ipv6_cidr_blocks:
+                    nullable: true
+                    type: array
+                    items:
+                      type: string
+                  user_data_path:
+                    type: string
+                    nullable: true
+                  ebs_size:
+                    type: number
+                    nullable: true
+                  root_volume_size:
+                    type: number
+                    nullable: true
+                  sg_rules:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        description: 
+                          type: string
+                        cidr_blocks:
+                          type: array
+                          items:
+                            type: string
+                        from_port:
+                          type: string
+                        protocol:
+                          type: string
+                        self:
+                          type: boolean
+                          nullable: true
+                        source_security_group_id:
+                          type: string
+                          nullable: true
+                        to_port:
+                          type: string
+                        type:
+                          type: string
+                        prefix_list_ids:
+                          type: array
+                          nullable: true
+                          items:
+                            type: string
+                        ipv6_cidr_blocks:
+                          type: array
+                          nullable: true
+                          items:
+                            type: string
+        cw-trigger_map: 
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              object_instance:
+                type: object
+                properties:
+                  rule_definition:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      schedule_expression:
+                        type: string
+                        nullable: true
+                      event_pattern:
+                        type: string
+                        nullable: true
+                      description:
+                        type: string
+                  log_group:
+                    type: object
+                    nullable: true
+                    properties:
+                      name:
+                        type: string
+                      retention_in_days :
+                        type: number
+                  lambda_trigger:
+                    type: object
+                    nullable: true
+                    properties:
+                      function_name:
+                        type: string
+                      lambda_arn:
+                        type: string
+                  sns_trigger:
+                    type: object
+                    nullable: true
+                    properties:
+                      topic_arn:
+                        type: string
+                      email_template:
+                        type: string
+        s3_map: 
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              object_instance:
+                type: object
+                properties:
+                  s3_name:
+                    type: string
+                  acl:
+                    type: string
+                    nullable: true
+                  identifiers:
+                    type: array
+                    items:
+                      type: string
+                  actions:
+                    type: array
+                    items:
+                      type: string
